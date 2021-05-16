@@ -2,6 +2,8 @@ package com.test.testvector.path;
 
 import android.graphics.Path;
 
+import androidx.annotation.Nullable;
+
 /**
  * function:关闭Path。执行Path.close()操作
  *
@@ -15,7 +17,10 @@ public class PathZ extends PathRule {
     }
 
     @Override
-    protected void attachToPath(Path path, float density) {
+    public void attachToPath(@Nullable Path path, float density) {
+        if (path == null) {
+            return;
+        }
         path.close();
     }
 

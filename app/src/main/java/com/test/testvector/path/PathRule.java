@@ -3,6 +3,8 @@ package com.test.testvector.path;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,14 +43,10 @@ public abstract class PathRule implements Iterator<PathRule> {
 
     /**
      * 执行Path操作
-     *
-     * @param path    Path对象
-     * @param density 缩放比例
      */
-    public void executePath(Path path, float density) {
+    protected void executePath() {
         checkData();
         calAbsPoints();
-        attachToPath(path, density);
     }
 
     /**
@@ -57,7 +55,7 @@ public abstract class PathRule implements Iterator<PathRule> {
      * @param path    {@link Path}对象，用于执行具体的动作
      * @param density 缩放比例
      */
-    protected abstract void attachToPath(Path path, float density);
+    public abstract void attachToPath(@Nullable Path path, float density);
 
     /**
      * 指令对应的值的集合的大小
@@ -91,7 +89,7 @@ public abstract class PathRule implements Iterator<PathRule> {
      */
     protected void checkData() {
         if (points.size() != pointSize()) {
-            throw new RuntimeException(String.format("The current path rule does not match its expected length. The length should be %d, the actual length is %d", pointSize(), points.size()));
+            throw new RuntimeException(String.format("The current path rule does not match its expected length. The length should be %d, the actual length is %d. curr:%s", pointSize(), points.size(), toString()));
         }
     }
 
@@ -146,4 +144,17 @@ public abstract class PathRule implements Iterator<PathRule> {
         return new PointF(absPoints.get(absPoints.size() - 2), absPoints.get(absPoints.size() - 1));
     }
 
+    public List<Float> getAbsPoints() {
+        return absPoints;
+    }
+
+    @Override
+    public String toString() {
+        return "PathRule{" +
+                "key='" + key + '\'' +
+                ", points=" + points +
+                ", absPoints=" + absPoints +
+                ", class=" + getClass().getSimpleName() +
+                '}';
+    }
 }

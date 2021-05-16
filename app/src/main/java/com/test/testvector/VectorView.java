@@ -72,8 +72,8 @@ public class VectorView extends View {
         PathRule rules = PathFactory.parse(pathData);
         path.reset();
 
-        for (PathRule rule = rules; rule.hasNext(); rule = rule.next()) {
-            rule.executePath(path, scaleDensity);
+        for (PathRule rule = rules; rule != null; rule = rule.next()) {
+            rule.attachToPath(path, scaleDensity);
         }
     }
 

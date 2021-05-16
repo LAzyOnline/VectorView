@@ -4,6 +4,8 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 /**
  * function:三阶贝塞尔曲线Path。执行Path.cubicTo操作
  *
@@ -22,7 +24,10 @@ public class PathCubicTo extends PathRule {
     }
 
     @Override
-    protected void attachToPath(Path path, float density) {
+    public void attachToPath(@Nullable Path path, float density) {
+        if (path == null) {
+            return;
+        }
         if (PathFactory.S.equalsIgnoreCase(key)) {
             if (!(previous instanceof PathCubicTo)) {
                 Log.e(TAG, "Encountered an error, the instruction before the current instruction S should be the C or S instruction. But the previous instruction of the current instruction is " + (previous != null ? previous.key : "NULL"));

@@ -11,14 +11,17 @@ import android.graphics.PointF;
 public class PathFactory {
 
     private static final String M = "M";
-    private static final String L = "L";
     private static final String C = "C";
     private static final String A = "A";
     private static final String Q = "Q";
     private static final String Z = "Z";
+    public static final String L = "L";
 
     public static final String T = "T";
     public static final String S = "S";
+
+    public static final String H = "H";
+    public static final String V = "V";
 
     /**
      * 解析路径
@@ -31,6 +34,7 @@ public class PathFactory {
             return null;
         }
         String[] datas = path.split(" ");
+        PathRule firstRule = null;
         PathRule lastPathRule = null;
         for (String data : datas) {
             if (data == null || data.length() == 0) {
@@ -40,7 +44,7 @@ public class PathFactory {
             PathRule pathRule = null;
             if (M.equalsIgnoreCase(first)) {
                 pathRule = new PathMoveTo(first);
-            } else if (L.equalsIgnoreCase(first)) {
+            } else if (L.equalsIgnoreCase(first) || H.equalsIgnoreCase(first) || V.equalsIgnoreCase(first)) {
                 pathRule = new PathLineTo(first);
             } else if (C.equalsIgnoreCase(first) || S.equalsIgnoreCase(first)) {
                 pathRule = new PathCubicTo(first);
@@ -60,8 +64,16 @@ public class PathFactory {
                 }
                 lastPathRule = pathRule;
             }
+            if (firstRule == null) {
+                firstRule = pathRule;
+            }
         }
-        return lastPathRule;
+        if (firstRule != null) {
+            for (PathRule rule = firstRule; rule != null; rule = rule.next) {
+                rule.executePath();
+            }
+        }
+        return firstRule;
     }
 
     /**
