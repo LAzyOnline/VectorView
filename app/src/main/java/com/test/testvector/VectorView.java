@@ -61,6 +61,10 @@ public class VectorView extends View {
 
     public VectorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        paint.setStyle(Paint.Style.FILL);
+
+        scaleDensity = getResources().getDisplayMetrics().density;
+        paint.setStrokeWidth(1 * scaleDensity);
     }
 
     /**
@@ -130,6 +134,16 @@ public class VectorView extends View {
         canvas.restore();
     }
 
+    public void setViewportWidth(float viewportWidth) {
+        this.viewportWidth = viewportWidth;
+        invalidate();
+    }
+
+    public void setViewportHeight(float viewportHeight) {
+        this.viewportHeight = viewportHeight;
+        invalidate();
+    }
+
     /**
      * 设置路径值
      *
@@ -140,7 +154,6 @@ public class VectorView extends View {
             return;
         }
         this.pathData = path;
-        parsePath(pathData);
         invalidate();
     }
 

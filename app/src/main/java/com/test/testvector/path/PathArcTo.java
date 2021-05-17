@@ -2,6 +2,7 @@ package com.test.testvector.path;
 
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import androidx.annotation.Nullable;
 
@@ -44,7 +45,7 @@ public class PathArcTo extends PathRule {
         if (value == null) {
             return;
         }
-        path.arcTo((float) (value.cx - rx), (float) (value.cy - ry), (float) (value.cx + rx), (float) (value.cy + ry), (float) value.theta1, (float) value.delta_theta, false);
+        path.arcTo(new RectF((float) (value.cx - rx), (float) (value.cy - ry), (float) (value.cx + rx), (float) (value.cy + ry)), (float) value.theta1, (float) value.delta_theta, false);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class PathArcTo extends PathRule {
             if (i < INDEX_FINISH_X) {
                 absPoints.add(points.get(i));
             } else {
-                absPoints.add(i % 2 != 0 ? (previousPos.x + points.get(i)) : (previousPos.y + points.get(i)));
+                absPoints.add(i == INDEX_FINISH_X ? (previousPos.x + points.get(i)) : (previousPos.y + points.get(i)));
             }
         }
     }
@@ -93,7 +94,7 @@ public class PathArcTo extends PathRule {
 
     /**
      * 从端点到中心参数化的转换<br/>
-     * <a href="https://blog.csdn.net/iteye_3606/article/details/82475809">参考</a><br/>
+     * <a href="https://blog.csdn.net/cuixiping/article/details/7958298">参考</a><br/>
      * <a href="https://www.w3.org/TR/2011/REC-SVG11-20110816/implnote.html#ArcImplementationNotes">原始资料</a>
      *
      * @param x1  起点X坐标

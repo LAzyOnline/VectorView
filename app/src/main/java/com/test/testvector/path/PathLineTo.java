@@ -55,9 +55,9 @@ public class PathLineTo extends PathRule {
 
             if (isHorizontal) {
                 absPoints.add(previousPos.x + points.get(0));
-                absPoints.add(0f);
+                absPoints.add(previousPos.y);
             } else {
-                absPoints.add(0f);
+                absPoints.add(previousPos.x);
                 absPoints.add(previousPos.y + points.get(0));
             }
         }
